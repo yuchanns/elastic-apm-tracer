@@ -25,9 +25,11 @@ class RequestWatcher
             $data = $event->request->toArray();
             isset($data['password']) && $data['password'] = md5($data['password']);
             isset($data['pwd']) && $data['pwd'] = md5($data['pwd']);
+            $header = $event->request->header();
+            $header = \Yuchanns\ElasticApmTracer\facades\TracerElasticApm::inject($header);
             $ctx->setLabel('http.requestData', json_encode([
                 'data' => $data,
-                'headers' => $event->request->header()
+                'headers' => $header
             ], JSON_UNESCAPED_UNICODE));
 
             $responseData = json_decode($event->response->getContent(), true);

@@ -3,6 +3,7 @@
 namespace Yuchanns\ElasticApmTracer;
 
 use Illuminate\Contracts\Foundation\Application;
+use Elastic\Apm\ElasticApm;
 
 class TracerElasticApm
 {
@@ -38,7 +39,7 @@ class TracerElasticApm
 
     public function inject(array $header)
     {
-        ElasticApm::getCurrentTransaction()->injectDistributedTracingHeaders(function(string $name, string $value) use ($header): void {
+        ElasticApm::getCurrentTransaction()->injectDistributedTracingHeaders(function(string $name, string $value) use (&$header): void {
             $header[$name] = $value;
         });
 
