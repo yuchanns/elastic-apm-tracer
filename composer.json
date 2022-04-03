@@ -1,0 +1,19 @@
+{
+    "name": "yuchanns/elastic-apm-tracer",
+    "description": "An elastic apm package for laravel which requires the extension elastic_apm.so",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Yuchanns\\ElasticApmTracer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "yuchanns",
+            "email": "me@yuchanns.xyz"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
