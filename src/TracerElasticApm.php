@@ -30,7 +30,7 @@ class TracerElasticApm
     public function endSpan($name)
     {
         if (!isset($this->spanMap[$name])) {
-            return false;
+            return;
         }
 
         $this->spanMap[$name]->end();
