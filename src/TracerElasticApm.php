@@ -40,7 +40,9 @@ class TracerElasticApm
     public function inject(array $header)
     {
         ElasticApm::getCurrentTransaction()->injectDistributedTracingHeaders(function(string $name, string $value) use (&$header): void {
-            $header[$name] = $value;
+            if (!isset($header[$name])) {
+                $header[$name] = $value;
+            }
         });
 
         return $header;

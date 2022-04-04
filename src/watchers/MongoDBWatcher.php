@@ -26,7 +26,7 @@ class MongoDBWatcher implements CommandSubscriberBase
         $this->span = $transaction->beginCurrentSpan('DB Query', 'db', 'mongodb', 'query');
         $commands = (array) $event->getCommand();
         foreach ($commands as $label => $value) {
-            $this->span->context()->setLabel($label, json_encode($value, JSON_UNESCAPED_UNICODE));
+            $this->span->context()->setLabel('db.' . $label, json_encode($value, JSON_UNESCAPED_UNICODE));
         }
     }
 

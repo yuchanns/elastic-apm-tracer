@@ -13,6 +13,17 @@ class RequestWatcher
         Event::listen(RequestHandled::class, function(RequestHandled $event) {
             $transaction = ElasticApm::getCurrentTransaction();
 
+            if ($transaction == null) {
+                $name = $event->request->method().':'.optional($event->request->route())->uri() ?? $event->request->getPathInfo();
+                $transaction = ElasticApm::newTransaction($name, config('APP_NAME') ? config('APP_NAME') : 'http-server')
+                    ->distributedTracingHeaderExtractor(
+                        function (string $headerName) use ($event): ?string {
+                            $header = $event->request->header();
+                            return $header[$headerName] ?? null;
+                        }
+                    )->begin();
+            }
+
             $ctx = $transaction->context();
 
             $ctx->setLabel('http.host', $event->request->getHost());
