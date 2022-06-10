@@ -45,7 +45,7 @@ class RequestWatcher
 
             $responseData = json_decode($event->response->getContent(), true);
 
-            if ($responseData['code'] == 500){
+            if (isset($responseData['code']) && $responseData['code'] == 500){
                 $ctx->setLabel('error', true);
             }
 
