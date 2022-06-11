@@ -20,6 +20,9 @@ class TracerElasticApm
             if (!isset($header[$name])) {
                 $header[$name] = $value;
             }
+            if (!isset($header['Elastic-Apm-Traceparent'])) {
+                $header['Elastic-Apm-Traceparent'] = $value;
+            }
         });
 
         return $header;
