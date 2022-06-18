@@ -20,5 +20,4 @@ composer require yuchanns/elastic-apm-tracer
 ## TODO Maybe (**PR is Welcome**)
 - [x] Injection of HttpRequest
 - [x] Injection of MongoDB
-- [ ] Injection of Mysql
 - [ ] Injection of Redis
