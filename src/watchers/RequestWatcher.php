@@ -10,11 +10,11 @@ class RequestWatcher
 {
     public function register(): void
     {
-        Event::listen(RequestHandled::class, function(RequestHandled $event) {
+        Event::listen(RequestHandled::class, function (RequestHandled $event) {
             $transaction = ElasticApm::getCurrentTransaction();
 
             if ($transaction == null) {
-                $name = $event->request->method().':'.optional($event->request->route())->uri() ?? $event->request->getPathInfo();
+                $name = $event->request->method() . ':' . optional($event->request->route())->uri() ?? $event->request->getPathInfo();
                 $transaction = ElasticApm::newTransaction($name, config('APP_NAME') ? config('APP_NAME') : 'http-server')
                     ->distributedTracingHeaderExtractor(
                         function (string $headerName) use ($event): ?string {
@@ -38,14 +38,14 @@ class RequestWatcher
             isset($data['pwd']) && $data['pwd'] = md5($data['pwd']);
             $header = $event->request->header();
             $header = \Yuchanns\ElasticApmTracer\facades\TracerElasticApm::inject($header);
-            $ctx->setLabel('http.requestData', json_encode([
-                'data' => $data,
-                'headers' => $header
-            ], JSON_UNESCAPED_UNICODE));
+
+            $ctx->setLabel('http.requestHeader', json_encode($header, JSON_UNESCAPED_UNICODE));
+
+            $ctx->setLabel('http.requestData', json_encode($data, JSON_UNESCAPED_UNICODE));
 
             $responseData = json_decode($event->response->getContent(), true);
 
-            if (isset($responseData['code']) && $responseData['code'] == 500){
+            if (isset($responseData['code']) && $responseData['code'] == 500) {
                 $ctx->setLabel('error', true);
             }
 
